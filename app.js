@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const { MONGODB_URI } = require("./config");
@@ -9,15 +9,6 @@ app.use(express.json());
 
 // Serve public folder (front-end build folder)
 app.use(express.static(path.join("public")));
-
-// Set CORS header
-app.use((req, res, next) => {
-  res.setHeader("Access-control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
-  // Allow client to set headers with Content-Type
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
 
 // Register Route
 app.use(userRoutes);
