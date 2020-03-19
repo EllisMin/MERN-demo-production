@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 const { MONGODB_URI } = require("./config");
@@ -7,8 +7,8 @@ const userRoutes = require("./routes/user");
 const app = express();
 app.use(express.json());
 
-// Serve public folder (front-end build folder)
-app.use(express.static(path.join("public")));
+// Serve build folder
+app.use(express.static(path.join("front-end", "build")));
 
 // Set CORS header
 app.use((req, res, next) => {
@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 app.use(userRoutes);
 
 app.use((req, res, next) => {
-  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+  res.sendFile(path.resolve(__dirname, "front-end", "build", "index.html"));
 });
 
 // Error Handler
