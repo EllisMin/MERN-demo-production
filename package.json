@@ -9,6 +9,7 @@
     "server": "nodemon app.js",
     "client": "npm start --prefix front-end",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build-client": "npm run build --prefix front-end",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm i --prefix front-end && npm run build --prefix front-end"
   },
   "keywords": [],

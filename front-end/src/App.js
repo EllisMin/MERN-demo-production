@@ -13,8 +13,6 @@ const App = () => {
 
   const fetchUsers = async () => {
     try {
-      console.log(process.env.REACT_APP_FETCH_URL);
-      
       const res = await fetch(process.env.REACT_APP_FETCH_URL + "/user", {
         method: "GET"
       });
