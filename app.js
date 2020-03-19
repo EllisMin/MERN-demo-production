@@ -7,7 +7,6 @@ const userRoutes = require("./routes/user");
 const app = express();
 app.use(express.json());
 
-// Serve build folder
 app.use(express.static(path.join("front-end", "build")));
 
 // Set CORS header
