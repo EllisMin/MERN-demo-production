@@ -3,7 +3,7 @@ const io = require("../socket");
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().sort({ createdAt: -1 });
     res.status(200).json({
       message: "Fetched users",
       users: users
@@ -29,7 +29,7 @@ exports.postUser = async (req, res, next) => {
 
     // Sends message to all connected users
     io.getIO().emit("add event", {
-      action: "create",
+      action: "update",
       user: { ...user._doc }
     });
 
@@ -55,6 +55,13 @@ exports.deleteUser = async (req, res, next) => {
       throw error;
     }
     await User.findByIdAndRemove(userId);
+
+    // Sends message to all connected users
+    io.getIO().emit("add event", {
+      action: "update",
+      user: { ...user._doc }
+    });
+
     res.status(200).json({ message: "User removed" });
   } catch (err) {
     if (!err.statusCode) {

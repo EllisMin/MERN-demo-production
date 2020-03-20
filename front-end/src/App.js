@@ -14,17 +14,11 @@ const App = () => {
     // Socket Connection
     const socket = openSocket(process.env.REACT_APP_FETCH_URL);
     socket.on("add event", data => {
-      if (data.action === "create") {
-        // updateUsers(data.user);
+      if (data.action === "update") {
+        fetchUsers();
       }
     });
   }, []);
-
-  const updateUsers = user => {
-    const updatedUsers = [...users];
-    updatedUsers.unshift(user);
-    setUsers(updatedUsers);
-  };
 
   const fetchUsers = async () => {
     try {
