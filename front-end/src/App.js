@@ -6,14 +6,15 @@ import UserAddForm from "./user-add-form";
 import "./App.css";
 
 const App = () => {
-  const [btnLoading, setBtnLoading] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchUsers();
     // Socket Connection
     const socket = openSocket(process.env.REACT_APP_FETCH_URL);
-    socket.on("add event", data => {
+    socket.on("update event", data => {
       if (data.action === "update") {
         fetchUsers();
       }
@@ -36,7 +37,7 @@ const App = () => {
   };
 
   const handleAdd = async formData => {
-    setBtnLoading(true);
+    setAddLoading(true);
     try {
       const res = await fetch(process.env.REACT_APP_FETCH_URL + "/user", {
         method: "POST",
@@ -58,11 +59,11 @@ const App = () => {
     } catch (err) {
       console.log(err);
     }
-    setBtnLoading(false);
+    setAddLoading(false);
   };
 
   const handleDelete = async userId => {
-    setBtnLoading(true);
+    setDeleteLoading(true);
     try {
       const res = await fetch(
         process.env.REACT_APP_FETCH_URL + "/user/" + userId,
@@ -79,7 +80,7 @@ const App = () => {
     } catch (err) {
       console.log(err); ///
     }
-    setBtnLoading(false);
+    setDeleteLoading(false);
   };
 
   return (
@@ -90,7 +91,7 @@ const App = () => {
       </header>
       <main>
         <h2>Add User:</h2>
-        <UserAddForm loading={btnLoading} handleAdd={handleAdd} />
+        <UserAddForm loading={addLoading} handleAdd={handleAdd} />
         <hr />
         <h2>Users:</h2>
         <ul className="user-list">
@@ -105,6 +106,7 @@ const App = () => {
                   age={user.age}
                   occupation={user.occupation}
                   handleDelete={handleDelete}
+                  loading={deleteLoading}
                 />
               ))}
             </>

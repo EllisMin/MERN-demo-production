@@ -28,7 +28,7 @@ exports.postUser = async (req, res, next) => {
     await user.save(); // Save in db
 
     // Sends message to all connected users
-    io.getIO().emit("add event", {
+    io.getIO().emit("update event", {
       action: "update",
       user: { ...user._doc }
     });
@@ -57,7 +57,7 @@ exports.deleteUser = async (req, res, next) => {
     await User.findByIdAndRemove(userId);
 
     // Sends message to all connected users
-    io.getIO().emit("add event", {
+    io.getIO().emit("update event", {
       action: "update",
       user: { ...user._doc }
     });
