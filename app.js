@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+
 const { MONGODB_URI } = require("./config");
 const userRoutes = require("./routes/user");
 
@@ -42,8 +43,14 @@ mongoose
   })
   .then(result => {
     const port = process.env.PORT || 8080;
-    app.listen(port, () => {
+    const server = app.listen(port, () => {
       console.log(`Listening on port ${port}...`);
+    });
+    // Create socket io connection
+    const io = require("./socket").init(server);
+    // Connection listeners with client
+    io.on("connection", socket => {
+      console.log("Client connected");
     });
   })
   .catch(err => {

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import openSocket from "socket.io-client";
+
 import User from "./user";
 import UserAddForm from "./user-add-form";
 import "./App.css";
@@ -9,7 +11,20 @@ const App = () => {
 
   useEffect(() => {
     fetchUsers();
+    // Socket Connection
+    const socket = openSocket(process.env.REACT_APP_FETCH_URL);
+    socket.on("add event", data => {
+      if (data.action === "create") {
+        // updateUsers(data.user);
+      }
+    });
   }, []);
+
+  const updateUsers = user => {
+    const updatedUsers = [...users];
+    updatedUsers.unshift(user);
+    setUsers(updatedUsers);
+  };
 
   const fetchUsers = async () => {
     try {

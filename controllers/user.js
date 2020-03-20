@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const io = require("../socket");
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -25,6 +26,12 @@ exports.postUser = async (req, res, next) => {
       occupation: occupation
     });
     await user.save(); // Save in db
+
+    // Sends message to all connected users
+    io.getIO().emit("add event", {
+      action: "create",
+      user: { ...user._doc }
+    });
 
     res.status(201).json({
       message: "User created",
