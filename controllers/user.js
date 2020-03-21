@@ -18,6 +18,14 @@ exports.getUsers = async (req, res, next) => {
 
 exports.postUser = async (req, res, next) => {
   try {
+    // Clear documents
+    const totalUsers = await User.find().countDocuments();
+    if (totalUsers !== -1 && totalUsers >= 25) {
+      User.deleteMany({}, () => {
+        console.log("Documents limit exceeded; cleared docs");
+      });
+    }
+
     let occupation = req.body.occupation;
     if (!occupation) occupation = "unemployed";
     const user = new User({
