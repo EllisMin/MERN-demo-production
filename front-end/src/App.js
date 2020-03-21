@@ -22,12 +22,9 @@ const App = () => {
       if (data.action === "add") {
         setUsers(prevUsers => [data.user, ...prevUsers]);
       } else if (data.action === "delete") {
-        setUsers(prevUsers => {
-          const updatedUsers = prevUsers.filter(
-            user => user._id !== data.userId
-          );
-          return updatedUsers;
-        });
+        setUsers(prevUsers =>
+          prevUsers.filter(user => user._id !== data.userId)
+        );
       }
     });
   };
