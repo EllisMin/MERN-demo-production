@@ -1,3 +1,3 @@
 module.exports = {
-  MONGODB_URI: "mongodb+srv://dmin:00000000@cluster0-xc4db.mongodb.net/test"
+  MONGODB_URI: "<YOUR_MONGO_DB_URI>"
 };
