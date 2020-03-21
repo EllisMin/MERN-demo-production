@@ -28,8 +28,8 @@ exports.postUser = async (req, res, next) => {
     await user.save(); // Save in db
 
     // Sends message to all connected users
-    io.getIO().emit("update event", {
-      action: "update",
+    io.getIO().emit("user event", {
+      action: "add",
       user: { ...user._doc }
     });
 
@@ -57,9 +57,9 @@ exports.deleteUser = async (req, res, next) => {
     await User.findByIdAndRemove(userId);
 
     // Sends message to all connected users
-    io.getIO().emit("update event", {
-      action: "update",
-      user: { ...user._doc }
+    io.getIO().emit("user event", {
+      action: "delete",
+      userId: userId
     });
 
     res.status(200).json({ message: "User removed" });

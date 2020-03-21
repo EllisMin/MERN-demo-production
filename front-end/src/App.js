@@ -12,14 +12,27 @@ const App = () => {
 
   useEffect(() => {
     fetchUsers();
+    createSocketConnection();
+  }, []);
+
+  const createSocketConnection = () => {
     // Socket Connection
     const socket = openSocket(process.env.REACT_APP_FETCH_URL);
-    socket.on("update event", data => {
-      if (data.action === "update") {
-        fetchUsers();
+    socket.on("user event", data => {
+      if (data.action === "add") {
+        setUsers(prevUsers => [data.user, ...prevUsers]);
+      } else if (data.action === "delete") {
+        setUsers(prevUsers => {
+          const updatedUsers = prevUsers.filter(
+            user => user._id !== data.userId
+          );
+          return updatedUsers;
+        });
       }
     });
-  }, []);
+  };
+
+  console.log(users);
 
   const fetchUsers = async () => {
     try {
